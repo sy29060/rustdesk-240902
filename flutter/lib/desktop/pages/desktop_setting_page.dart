@@ -879,48 +879,48 @@ class _SafetyState extends State<_Safety> with AutomaticKeepAliveClientMixin {
       }
 
       return _Card(title: 'Permissions', children: [
-        ComboBox(
-            keys: [
-              // defaultOptionAccessMode,
-              'full',
-              // 'view',
-            ],
-            values: [
-              // translate('Custom'),
-              translate('Full Access'),
-              // translate('Screen Share'),
-            ],
-            enabled: enabled && !isOptionFixed(kOptionAccessMode),
-            initialKey: initialKey,
-            onChanged: (mode) async {
-              await bind.mainSetOption(key: kOptionAccessMode, value: mode);
-              setState(() {});
-            }).marginOnly(left: _kContentHMargin),
+        // ComboBox(
+        //     keys: [
+        //       defaultOptionAccessMode,
+        //       'full',
+        //       'view',
+        //     ],
+        //     values: [
+        //       translate('Custom'),
+        //       translate('Full Access'),
+        //       translate('Screen Share'),
+        //     ],
+        //     enabled: enabled && !isOptionFixed(kOptionAccessMode),
+        //     initialKey: initialKey,
+        //     onChanged: (mode) async {
+        //       await bind.mainSetOption(key: kOptionAccessMode, value: mode);
+        //       setState(() {});
+        //     }).marginOnly(left: _kContentHMargin),
         Column(
           children: [
-            _OptionCheckBox(
-                context, 'Enable keyboard/mouse', kOptionEnableKeyboard,
-                enabled: enabled, fakeValue: fakeValue),
-            _OptionCheckBox(context, 'Enable clipboard', kOptionEnableClipboard,
-                enabled: enabled, fakeValue: fakeValue),
-            _OptionCheckBox(
-                context, 'Enable file transfer', kOptionEnableFileTransfer,
-                enabled: enabled, fakeValue: fakeValue),
-            _OptionCheckBox(context, 'Enable audio', kOptionEnableAudio,
-                enabled: enabled, fakeValue: fakeValue),
-            _OptionCheckBox(
-                context, 'Enable TCP tunneling', kOptionEnableTunnel,
-                enabled: enabled, fakeValue: fakeValue),
-            _OptionCheckBox(
-                context, 'Enable remote restart', kOptionEnableRemoteRestart,
-                enabled: enabled, fakeValue: fakeValue),
-            _OptionCheckBox(
-                context, 'Enable recording session', kOptionEnableRecordSession,
-                enabled: enabled, fakeValue: fakeValue),
-            if (isWindows)
-              _OptionCheckBox(context, 'Enable blocking user input',
-                  kOptionEnableBlockInput,
-                  enabled: enabled, fakeValue: fakeValue),
+            // _OptionCheckBox(
+            //     context, 'Enable keyboard/mouse', kOptionEnableKeyboard,
+            //     enabled: enabled, fakeValue: fakeValue),
+            // _OptionCheckBox(context, 'Enable clipboard', kOptionEnableClipboard,
+            //     enabled: enabled, fakeValue: fakeValue),
+            // _OptionCheckBox(
+            //     context, 'Enable file transfer', kOptionEnableFileTransfer,
+            //     enabled: enabled, fakeValue: fakeValue),
+            // _OptionCheckBox(context, 'Enable audio', kOptionEnableAudio,
+            //     enabled: enabled, fakeValue: fakeValue),
+            // _OptionCheckBox(
+            //     context, 'Enable TCP tunneling', kOptionEnableTunnel,
+            //     enabled: enabled, fakeValue: fakeValue),
+            // _OptionCheckBox(
+            //     context, 'Enable remote restart', kOptionEnableRemoteRestart,
+            //     enabled: enabled, fakeValue: fakeValue),
+            // _OptionCheckBox(
+            //     context, 'Enable recording session', kOptionEnableRecordSession,
+            //     enabled: enabled, fakeValue: fakeValue),
+            // if (isWindows)
+            //   _OptionCheckBox(context, 'Enable blocking user input',
+            //       kOptionEnableBlockInput,
+            //       enabled: enabled, fakeValue: fakeValue),
             _OptionCheckBox(context, 'Enable remote configuration modification',
                 kOptionAllowRemoteConfigModification,
                 enabled: enabled, fakeValue: fakeValue),

@@ -66,14 +66,14 @@ class DesktopSettingPage extends StatefulWidget {
         !bind.isDisableSettings() &&
         bind.mainGetBuildinOption(key: kOptionHideSecuritySetting) != 'Y')
       SettingsTabKey.safety,
-    if (!bind.isDisableSettings() &&
-        bind.mainGetBuildinOption(key: kOptionHideNetworkSetting) != 'Y')
-      SettingsTabKey.network,
+    // if (!bind.isDisableSettings() &&
+    //     bind.mainGetBuildinOption(key: kOptionHideNetworkSetting) != 'Y')
+    //   SettingsTabKey.network,
     if (!bind.isIncomingOnly()) SettingsTabKey.display,
     if (!isWeb && !bind.isIncomingOnly() && bind.pluginFeatureIsEnabled())
       SettingsTabKey.plugin,
-    if (!bind.isDisableAccount()) SettingsTabKey.account,
-    SettingsTabKey.about,
+    // if (!bind.isDisableAccount()) SettingsTabKey.account,
+    // SettingsTabKey.about,
   ];
 
   DesktopSettingPage({Key? key, required this.initialTabkey}) : super(key: key);
@@ -711,8 +711,8 @@ class _SafetyState extends State<_Safety> with AutomaticKeepAliveClientMixin {
                   child: Column(children: [
                     permissions(context),
                     password(context),
-                    _Card(title: '2FA', children: [tfa()]),
-                    _Card(title: 'ID', children: [changeId()]),
+                    // _Card(title: '2FA', children: [tfa()]),
+                    // _Card(title: 'ID', children: [changeId()]),
                     more(context),
                   ]),
                 ),
@@ -881,14 +881,14 @@ class _SafetyState extends State<_Safety> with AutomaticKeepAliveClientMixin {
       return _Card(title: 'Permissions', children: [
         ComboBox(
             keys: [
-              defaultOptionAccessMode,
+              // defaultOptionAccessMode,
               'full',
-              'view',
+              // 'view',
             ],
             values: [
-              translate('Custom'),
+              // translate('Custom'),
               translate('Full Access'),
-              translate('Screen Share'),
+              // translate('Screen Share'),
             ],
             enabled: enabled && !isOptionFixed(kOptionAccessMode),
             initialKey: initialKey,

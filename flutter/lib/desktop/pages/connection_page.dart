@@ -328,194 +328,194 @@ class _ConnectionPageState extends State<ConnectionPage>
                 Expanded(
                     child: Row(
                   children: [
-                    AutoSizeText(
-                      translate('Control Remote Desktop'),
-                      maxLines: 1,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.merge(TextStyle(height: 1)),
-                    ).marginOnly(right: 4),
-                    Tooltip(
-                      waitDuration: Duration(milliseconds: 300),
-                      message: translate("id_input_tip"),
-                      child: Icon(
-                        Icons.help_outline_outlined,
-                        size: 16,
-                        color: Theme.of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.color
-                            ?.withOpacity(0.5),
-                      ),
-                    ),
+                    // AutoSizeText(
+                    //   translate('Control Remote Desktop'),
+                    //   maxLines: 1,
+                    //   style: Theme.of(context)
+                    //       .textTheme
+                    //       .titleLarge
+                    //       ?.merge(TextStyle(height: 1)),
+                    // ).marginOnly(right: 4),
+                    // Tooltip(
+                    //   waitDuration: Duration(milliseconds: 300),
+                    //   message: translate("id_input_tip"),
+                    //   child: Icon(
+                    //     Icons.help_outline_outlined,
+                    //     size: 16,
+                    //     color: Theme.of(context)
+                    //         .textTheme
+                    //         .titleLarge
+                    //         ?.color
+                    //         ?.withOpacity(0.5),
+                    //   ),
+                    // ),
                   ],
                 )),
               ],
             ).marginOnly(bottom: 15),
             Row(
               children: [
-                Expanded(
-                    child: Autocomplete<Peer>(
-                  optionsBuilder: (TextEditingValue textEditingValue) {
-                    if (textEditingValue.text == '') {
-                      return const Iterable<Peer>.empty();
-                    } else if (peers.isEmpty && !isPeersLoaded) {
-                      Peer emptyPeer = Peer(
-                        id: '',
-                        username: '',
-                        hostname: '',
-                        alias: '',
-                        platform: '',
-                        tags: [],
-                        hash: '',
-                        password: '',
-                        forceAlwaysRelay: false,
-                        rdpPort: '',
-                        rdpUsername: '',
-                        loginName: '',
-                      );
-                      return [emptyPeer];
-                    } else {
-                      String textWithoutSpaces =
-                          textEditingValue.text.replaceAll(" ", "");
-                      if (int.tryParse(textWithoutSpaces) != null) {
-                        textEditingValue = TextEditingValue(
-                          text: textWithoutSpaces,
-                          selection: textEditingValue.selection,
-                        );
-                      }
-                      String textToFind = textEditingValue.text.toLowerCase();
+                // Expanded(
+                //     child: Autocomplete<Peer>(
+                //   optionsBuilder: (TextEditingValue textEditingValue) {
+                //     if (textEditingValue.text == '') {
+                //       return const Iterable<Peer>.empty();
+                //     } else if (peers.isEmpty && !isPeersLoaded) {
+                //       Peer emptyPeer = Peer(
+                //         id: '',
+                //         username: '',
+                //         hostname: '',
+                //         alias: '',
+                //         platform: '',
+                //         tags: [],
+                //         hash: '',
+                //         password: '',
+                //         forceAlwaysRelay: false,
+                //         rdpPort: '',
+                //         rdpUsername: '',
+                //         loginName: '',
+                //       );
+                //       return [emptyPeer];
+                //     } else {
+                //       String textWithoutSpaces =
+                //           textEditingValue.text.replaceAll(" ", "");
+                //       if (int.tryParse(textWithoutSpaces) != null) {
+                //         textEditingValue = TextEditingValue(
+                //           text: textWithoutSpaces,
+                //           selection: textEditingValue.selection,
+                //         );
+                //       }
+                //       String textToFind = textEditingValue.text.toLowerCase();
 
-                      return peers
-                          .where((peer) =>
-                              peer.id.toLowerCase().contains(textToFind) ||
-                              peer.username
-                                  .toLowerCase()
-                                  .contains(textToFind) ||
-                              peer.hostname
-                                  .toLowerCase()
-                                  .contains(textToFind) ||
-                              peer.alias.toLowerCase().contains(textToFind))
-                          .toList();
-                    }
-                  },
-                  fieldViewBuilder: (
-                    BuildContext context,
-                    TextEditingController fieldTextEditingController,
-                    FocusNode fieldFocusNode,
-                    VoidCallback onFieldSubmitted,
-                  ) {
-                    fieldTextEditingController.text = _idController.text;
-                    Get.put<TextEditingController>(fieldTextEditingController);
-                    fieldFocusNode.addListener(() async {
-                      _idInputFocused.value = fieldFocusNode.hasFocus;
-                      if (fieldFocusNode.hasFocus && !isPeersLoading) {
-                        _fetchPeers();
-                      }
-                    });
-                    final textLength =
-                        fieldTextEditingController.value.text.length;
-                    // select all to facilitate removing text, just following the behavior of address input of chrome
-                    fieldTextEditingController.selection =
-                        TextSelection(baseOffset: 0, extentOffset: textLength);
-                    return Obx(() => TextField(
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          keyboardType: TextInputType.visiblePassword,
-                          focusNode: fieldFocusNode,
-                          style: const TextStyle(
-                            fontFamily: 'WorkSans',
-                            fontSize: 22,
-                            height: 1.4,
-                          ),
-                          maxLines: 1,
-                          cursorColor:
-                              Theme.of(context).textTheme.titleLarge?.color,
-                          decoration: InputDecoration(
-                              filled: false,
-                              counterText: '',
-                              hintText: _idInputFocused.value
-                                  ? null
-                                  : translate('Enter Remote ID'),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 13)),
-                          controller: fieldTextEditingController,
-                          inputFormatters: [IDTextInputFormatter()],
-                          onChanged: (v) {
-                            _idController.id = v;
-                          },
-                          onSubmitted: (_) {
-                            onConnect();
-                          },
-                        ));
-                  },
-                  onSelected: (option) {
-                    setState(() {
-                      _idController.id = option.id;
-                      FocusScope.of(context).unfocus();
-                    });
-                  },
-                  optionsViewBuilder: (BuildContext context,
-                      AutocompleteOnSelected<Peer> onSelected,
-                      Iterable<Peer> options) {
-                    double maxHeight = options.length * 50;
-                    if (options.length == 1) {
-                      maxHeight = 52;
-                    } else if (options.length == 3) {
-                      maxHeight = 146;
-                    } else if (options.length == 4) {
-                      maxHeight = 193;
-                    }
-                    maxHeight = maxHeight.clamp(0, 200);
+                //       return peers
+                //           .where((peer) =>
+                //               peer.id.toLowerCase().contains(textToFind) ||
+                //               peer.username
+                //                   .toLowerCase()
+                //                   .contains(textToFind) ||
+                //               peer.hostname
+                //                   .toLowerCase()
+                //                   .contains(textToFind) ||
+                //               peer.alias.toLowerCase().contains(textToFind))
+                //           .toList();
+                //     }
+                //   },
+                //   fieldViewBuilder: (
+                //     BuildContext context,
+                //     TextEditingController fieldTextEditingController,
+                //     FocusNode fieldFocusNode,
+                //     VoidCallback onFieldSubmitted,
+                //   ) {
+                //     fieldTextEditingController.text = _idController.text;
+                //     Get.put<TextEditingController>(fieldTextEditingController);
+                //     fieldFocusNode.addListener(() async {
+                //       _idInputFocused.value = fieldFocusNode.hasFocus;
+                //       if (fieldFocusNode.hasFocus && !isPeersLoading) {
+                //         _fetchPeers();
+                //       }
+                //     });
+                //     final textLength =
+                //         fieldTextEditingController.value.text.length;
+                //     // select all to facilitate removing text, just following the behavior of address input of chrome
+                //     fieldTextEditingController.selection =
+                //         TextSelection(baseOffset: 0, extentOffset: textLength);
+                //     return Obx(() => TextField(
+                //           autocorrect: false,
+                //           enableSuggestions: false,
+                //           keyboardType: TextInputType.visiblePassword,
+                //           focusNode: fieldFocusNode,
+                //           style: const TextStyle(
+                //             fontFamily: 'WorkSans',
+                //             fontSize: 22,
+                //             height: 1.4,
+                //           ),
+                //           maxLines: 1,
+                //           cursorColor:
+                //               Theme.of(context).textTheme.titleLarge?.color,
+                //           decoration: InputDecoration(
+                //               filled: false,
+                //               counterText: '',
+                //               hintText: _idInputFocused.value
+                //                   ? null
+                //                   : translate('Enter Remote ID'),
+                //               contentPadding: const EdgeInsets.symmetric(
+                //                   horizontal: 15, vertical: 13)),
+                //           controller: fieldTextEditingController,
+                //           inputFormatters: [IDTextInputFormatter()],
+                //           onChanged: (v) {
+                //             _idController.id = v;
+                //           },
+                //           onSubmitted: (_) {
+                //             onConnect();
+                //           },
+                //         ));
+                //   },
+                //   onSelected: (option) {
+                //     setState(() {
+                //       _idController.id = option.id;
+                //       FocusScope.of(context).unfocus();
+                //     });
+                //   },
+                //   optionsViewBuilder: (BuildContext context,
+                //       AutocompleteOnSelected<Peer> onSelected,
+                //       Iterable<Peer> options) {
+                //     double maxHeight = options.length * 50;
+                //     if (options.length == 1) {
+                //       maxHeight = 52;
+                //     } else if (options.length == 3) {
+                //       maxHeight = 146;
+                //     } else if (options.length == 4) {
+                //       maxHeight = 193;
+                //     }
+                //     maxHeight = maxHeight.clamp(0, 200);
 
-                    return Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 5,
-                                spreadRadius: 1,
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Material(
-                                elevation: 4,
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxHeight: maxHeight,
-                                    maxWidth: 319,
-                                  ),
-                                  child: peers.isEmpty && isPeersLoading
-                                      ? Container(
-                                          height: 80,
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                            ),
-                                          ))
-                                      : Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 5),
-                                          child: ListView(
-                                            children: options
-                                                .map((peer) =>
-                                                    AutocompletePeerTile(
-                                                        onSelect: () =>
-                                                            onSelected(peer),
-                                                        peer: peer))
-                                                .toList(),
-                                          ),
-                                        ),
-                                ),
-                              ))),
-                    );
-                  },
-                )),
+                //     return Align(
+                //       alignment: Alignment.topLeft,
+                //       child: Container(
+                //           decoration: BoxDecoration(
+                //             boxShadow: [
+                //               BoxShadow(
+                //                 color: Colors.black.withOpacity(0.3),
+                //                 blurRadius: 5,
+                //                 spreadRadius: 1,
+                //               ),
+                //             ],
+                //           ),
+                //           child: ClipRRect(
+                //               borderRadius: BorderRadius.circular(5),
+                //               child: Material(
+                //                 elevation: 4,
+                //                 child: ConstrainedBox(
+                //                   constraints: BoxConstraints(
+                //                     maxHeight: maxHeight,
+                //                     maxWidth: 319,
+                //                   ),
+                //                   child: peers.isEmpty && isPeersLoading
+                //                       ? Container(
+                //                           height: 80,
+                //                           child: Center(
+                //                             child: CircularProgressIndicator(
+                //                               strokeWidth: 2,
+                //                             ),
+                //                           ))
+                //                       : Padding(
+                //                           padding:
+                //                               const EdgeInsets.only(top: 5),
+                //                           child: ListView(
+                //                             children: options
+                //                                 .map((peer) =>
+                //                                     AutocompletePeerTile(
+                //                                         onSelect: () =>
+                //                                             onSelected(peer),
+                //                                         peer: peer))
+                //                                 .toList(),
+                //                           ),
+                //                         ),
+                //                 ),
+                //               ))),
+                //     );
+                //   },
+                // )),
               ],
             ),
             Padding(
@@ -523,15 +523,15 @@ class _ConnectionPageState extends State<ConnectionPage>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Button(
-                    isOutline: true,
-                    onTap: () => onConnect(isFileTransfer: true),
-                    text: "Transfer file",
-                  ),
-                  const SizedBox(
-                    width: 17,
-                  ),
-                  Button(onTap: onConnect, text: "Connect"),
+                  // Button(
+                  //   isOutline: true,
+                  //   onTap: () => onConnect(isFileTransfer: true),
+                  //   text: "Transfer file",
+                  // ),
+                  // const SizedBox(
+                  //   width: 17,
+                  // ),
+                  // Button(onTap: onConnect, text: "Connect"),
                 ],
               ),
             )
